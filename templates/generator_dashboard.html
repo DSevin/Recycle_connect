@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h4>Message Counts</h4>
+<ul>
+    {% for count in message_counts %}
+    <li>{{ count.author__username }}: {{ count.total }} messages</li>
+    <!-- Show a brief overview of the latest message from each recycler if desired -->
+    {% endfor %}
+</ul>
+
+<!-- Link to the detailed messages view -->
+<a href="{% url 'detailed_messages' %}">View Detailed Messages</a>
+
+{% endblock %}

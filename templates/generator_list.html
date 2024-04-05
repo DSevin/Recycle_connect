@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Generators List{% endblock %}
+
+{% block content %}
+    <h2>Generators List</h2>
+    <ul>
+    {% for generator in generators %}
+        <li>{{ generator.user.username }} - Location: {{ generator.location }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

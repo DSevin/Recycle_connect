@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Recycler Dashboard{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ profile.user.username }}!</h2>
+<p>This is the dashboard for recyclers. Here you can see your stats, manage your recyclables, and more.</p>
+
+<h2>You have {{ appointments_count }} appointment{{ appointments_count|pluralize }}</h2>
+
+<ul>
+{% for appointment in appointments %}
+  <li>
+    Appointment with {{ appointment.generator_name.user.username }} on {{ appointment.appointment_date }} -
+    <a href="{% url 'appointment_detail' appointment.id %}">View Details</a>
+  </li>
+{% empty %}
+  <li>No appointments found.</li>
+{% endfor %}
+</ul>
+
+
+<!-- Add more dashboard elements here -->
+{% endblock %}

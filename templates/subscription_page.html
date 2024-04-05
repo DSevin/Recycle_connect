@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Complete Your Signup</h2>
+<p>To access our recycling services, a monthly subscription is required. Click below to subscribe via PayPal.</p>
+
+{% if request.session.recycler_signup_form_data %}
+    Session data exists.
+{% else %}
+    No session data found.
+{% endif %}
+
+
+<!-- PayPal subscription button -->
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+    <input type="hidden" name="cmd" value="_xclick-subscriptions">
+    <input type="hidden" name="business" value="kginvestments@example.com">
+    <input type="hidden" name="item_name" value="Monthly Subscription">
+    <input type="hidden" name="currency_code" value="USD">
+    <input type="hidden" name="a3" value="10.00"> <!-- Monthly subscription price -->
+    <input type="hidden" name="p3" value="1"> <!-- Billing cycle: every 1 month -->
+    <input type="hidden" name="t3" value="M"> <!-- Recurring payments for each month -->
+    <!-- Return URLs -->
+    <input type="hidden" name="return" value="http://127.0.0.1:8000/app1/subscription/success/">
+    <input type="hidden" name="cancel_return" value="http://127.0.0.1:8000/app1/subscription/cancel/">
+
+    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribe_LG.gif" border="0" name="submit">
+</form>
+{% endblock %}

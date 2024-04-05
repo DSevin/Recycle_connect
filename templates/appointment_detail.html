@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+                        
+<h2>Appointment Details</h2>
+
+<p>Generator: {{ appointment.generator_name.user.username }}</p>
+<p>Recycler: {{ appointment.recycler_name.company_name }}</p>
+<p>Date: {{ appointment.appointment_date }}</p>
+<p>Details: {{ appointment.details }}</p>
+
+<h3>Replies</h3>
+<ul>
+    {% for message in messages %}
+    <li>
+        <strong>{{ message.author.username }}:</strong> {{ message.message }}
+    </li>
+    {% empty %}
+    <li>No messages yet.</li>
+    {% endfor %}
+</ul>
+
+<form method="post">
+    {% csrf_token %}
+    <textarea name="message" placeholder="Type your message here..." rows="4" cols="50"></textarea>
+    <button type="submit">Send</button>
+</form>
+{% endblock %}

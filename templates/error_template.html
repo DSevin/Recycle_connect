@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <!-- Optional: Include Bootstrap or your choice of CSS framework for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+            <!-- Display the error message passed from the view -->
+            {{ message }}
+        </div>
+        <!-- Optional: Include a link to navigate back to a safe page, like the home page -->
+        <a href="{% url 'index' %}" class="btn btn-primary">Go Home</a>
+    </div>
+
+    <!-- Optional: Bootstrap JS, Popper.js, and jQuery for Bootstrap components to function properly -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

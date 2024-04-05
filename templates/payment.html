@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Complete Your Payment</h2>
+<div id="paypal-button-container"></div>
+<script src="https://www.paypal.com/sdk/js?client-id=AY8YQp4vrcqnQQcpjsdpqebOyUWhXzt1T8RLCCkVwL0MN0au5Pnwg-T4f_stztAkFR4GOIzjTbzPcdgp"></script>
+<script>
+var createOrderUrl = '{% url "create_paypal_order" %}';  // Dynamically get the URL
+paypal.Buttons({
+    createOrder: function(data, actions) {
+        return fetch(createOrderUrl, {  // Use the variable here
+            method: 'post',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            },
+        }).then(function(response) {
+            return response.json();
+        }).then(function(orderData) {
+            return orderData.id;
+        });
+    },
+    onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+            alert('Transaction completed by ' + details.payer.name.given_name);
+            // Implement additional post-transaction logic here
+        });
+    }
+}).render('#paypal-button-container');
+</script>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Recycler Appointment{% endblock %}
+
+{% block content %}
+
+<ul>
+    {% for appointment in appointments %}
+      <li>
+        Appointment with {{ appointment.generator_name.user.username }} on {{ appointment.appointment_date }} -
+        <a href="{% url 'appointment_detail' appointment.id %}">View Details</a>
+      </li>
+    {% empty %}
+      <li>No appointments found.</li>
+    {% endfor %}
+    </ul>
+
+    {% endblock %}

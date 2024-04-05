@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Recent Messages from Recyclers</h3>
+<ul>
+    {% for message in messages %}
+    <li>
+        From {{ message.author.username }} ({{ message.created_at }}): {{ message.message }}
+        <!-- Optionally, include context about the related appointment -->
+        <a href="{% url 'delete_message' message.id %}">Delete</a>
+    </li>
+    {% empty %}
+    <li>No recent messages from recyclers.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

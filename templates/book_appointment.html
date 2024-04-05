@@ -1,0 +1,24 @@
+{% include 'base.html' %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Site</title>
+</head>
+<body>
+
+{% block content %}
+<!-- Your existing content -->
+<!-- Add this section for the appointment form -->
+<div>
+    <h2>Book an Appointment</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+</body>
+{% endblock %}
+</html>
