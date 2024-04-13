@@ -57,8 +57,12 @@ class AppointmentMessage(models.Model):
 class Subscription(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=False)
+    start_date = models.DateField(default=timezone.now)
+    end_date = models.DateField()
     expiry_date = models.DateTimeField(null=True, blank=True)
     
+    def __str__(self):
+        return f"Subscription for {self.user.username}"    
 
 class Payment(models.Model):
     payer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payments_made')

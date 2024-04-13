@@ -506,4 +506,78 @@ def payment_page(request):
     # Render the template that contains your PayPal button and JavaScript SDK integration
     return render(request, 'payment.html', {})
 
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.db.models.functions import ExtractMonth, ExtractYear
+from django.db.models import Count
+from .models import Payment, Appointment
+from collections import defaultdict
+import matplotlib
+matplotlib.use('Agg')  # Set the backend to 'Agg'
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from io import BytesIO
+import base64
+from datetime import datetime  # Import datetime
+
+@login_required
+def recycler_stats(request):
+    recycler_profile = request.user.recycler_profile
+
+    payments = (
+        Payment.objects.filter(payer=request.user)
+        .annotate(month=ExtractMonth('created_at'), year=ExtractYear('created_at'))
+        .values('month', 'year')
+        .annotate(count=Count('id'))
+        .order_by('year', 'month')
+    )
+
+    appointments = (
+        Appointment.objects.filter(recycler_name=recycler_profile)
+        .annotate(month=ExtractMonth('appointment_date'), year=ExtractYear('appointment_date'))
+        .values('month', 'year')
+        .annotate(count=Count('id'))
+        .order_by('year', 'month')
+    )
+
+    payments_data = defaultdict(int)
+    appointments_data = defaultdict(int)
+
+    for entry in payments:
+        date_key = f"{entry['year']}-{entry['month']:02d}"
+        payments_data[datetime.strptime(date_key, '%Y-%m')] += entry['count']
+
+    for entry in appointments:
+        date_key = f"{entry['year']}-{entry['month']:02d}"
+        appointments_data[datetime.strptime(date_key, '%Y-%m')] += entry['count']
+
+    dates = sorted(set(payments_data.keys()) | set(appointments_data.keys()))
+    payments_counts = [payments_data[date] for date in dates]
+    appointments_counts = [appointments_data[date] for date in dates]
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(dates, payments_counts, label='Payments', marker='o', linestyle='-')
+    plt.plot(dates, appointments_counts, label='Appointments', marker='o', linestyle='-')
+
+    plt.title('Your Monthly Payments and Appointments Stats')
+    plt.xlabel('Month')
+    plt.ylabel('Count')
+    plt.xticks(dates, rotation=45)
+    plt.legend()
+
+    plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))
+
+    buf = BytesIO()
+    plt.savefig(buf, format='png', bbox_inches='tight')
+    data = base64.b64encode(buf.getbuffer()).decode('ascii')
+    context = {'graph': f"data:image/png;base64,{data}"}
+
+    plt.close()
+
+    return render(request, 'recycler_stats.html', context)
+
+
+
+
 

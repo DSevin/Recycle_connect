@@ -6,6 +6,9 @@
 <h2>Welcome, {{ profile.user.username }}!</h2>
 <p>This is the dashboard for recyclers. Here you can see your stats, manage your recyclables, and more.</p>
 
+<!-- Include Stats Link -->
+<p><a href="{% url 'recycler_stats' %}">View Your Stats</a></p>
+
 <h2>You have {{ appointments_count }} appointment{{ appointments_count|pluralize }}</h2>
 
 <ul>
@@ -19,6 +22,11 @@
 {% endfor %}
 </ul>
 
+<!-- Chart Container (If you're planning to use this, ensure you have the necessary JavaScript to render the chart) -->
+<div>
+    <canvas id="statsChart" width="400" height="200"></canvas>
+</div>
 
 <!-- Add more dashboard elements here -->
+
 {% endblock %}

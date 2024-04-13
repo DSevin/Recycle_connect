@@ -28,5 +28,6 @@ urlpatterns = [
     path('recycling-education/', views.recycling_education, name='recycling_education'),
     path('payment/', views.payment_page, name='payment_page'),
     path('create-paypal-order/', views.create_paypal_order, name='create_paypal_order'),
+    path('recycler-stats/', views.recycler_stats, name='recycler_stats'),
     # Add other URLs as needed
 ]

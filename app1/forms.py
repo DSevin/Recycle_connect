@@ -85,7 +85,7 @@ class GeneratorSignUpForm(UserCreationForm):
 class AppointmentForm(forms.ModelForm):
     class Meta:
         model = Appointment
-        fields = ['generator_name', 'recycler_name', 'appointment_date', 'details']
+        fields = ['recycler_name', 'appointment_date', 'details']
         widgets = {
             'appointment_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
